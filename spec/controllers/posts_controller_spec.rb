@@ -25,6 +25,17 @@ RSpec.describe PostsController, type: :controller do
     end
 
     context "inValid post" do
+      let(:invalid_post_attributes) { FactoryGirl.attributes_for(:post, title: "") }
+
+      it "should not create a new post" do
+        post :create, post: invalid_post_attributes
+        expect(Post.count).to eq(0)
+      end
+
+      it "should have the error messages" do
+        post :create, post: invalid_post_attributes
+        expect(assigns(:post).errors).not_to be_empty
+      end
     end
 
   end
